@@ -1,10 +1,9 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { DeviceIdPlugin } from './definitions';
+import type { DeviceIdPlugin, DeviceIdResult } from './definitions';
 
 export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  async getDeviceId(): Promise<DeviceIdResult> {
+    throw new Error('Method not implemented.');
   }
 }

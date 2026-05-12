@@ -11,9 +11,39 @@ npx cap sync
 
 ## API
 
-<docgen-index></docgen-index>
+<docgen-index>
+
+* [`getDeviceId()`](#getdeviceid)
+* [Interfaces](#interfaces)
+
+</docgen-index>
 
 <docgen-api>
-<!-- run docgen to generate docs from the source -->
-<!-- More info: https://github.com/ionic-team/capacitor-docgen -->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+
+### getDeviceId()
+
+```typescript
+getDeviceId() => Promise<DeviceIdResult>
+```
+
+Get device ID and information
+
+**Returns:** <code>Promise&lt;<a href="#deviceidresult">DeviceIdResult</a>&gt;</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### DeviceIdResult
+
+| Prop               | Type                |
+| ------------------ | ------------------- |
+| **`uniqueId`**     | <code>string</code> |
+| **`manufacturer`** | <code>string</code> |
+| **`model`**        | <code>string</code> |
+| **`osVersion`**    | <code>string</code> |
+
 </docgen-api>

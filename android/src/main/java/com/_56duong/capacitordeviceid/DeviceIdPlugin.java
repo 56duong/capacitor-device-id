@@ -9,14 +9,12 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "DeviceId")
 public class DeviceIdPlugin extends Plugin {
 
-    private DeviceId implementation = new DeviceId();
-
     @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
-
+    public void getAndroidId(PluginCall call) {
+        String androidId = new DeviceId(getContext()).getAndroidId();
+        
         JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
+        ret.put("id", androidId);
         call.resolve(ret);
     }
 }
