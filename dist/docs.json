@@ -1,0 +1,70 @@
+{
+  "api": {
+    "name": "DeviceIdPlugin",
+    "slug": "deviceidplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "getDeviceId",
+        "signature": "() => Promise<DeviceIdResult>",
+        "parameters": [],
+        "returns": "Promise<DeviceIdResult>",
+        "tags": [
+          {
+            "name": "returns",
+            "text": "Promise with device information"
+          }
+        ],
+        "docs": "Get device ID and information",
+        "complexTypes": [
+          "DeviceIdResult"
+        ],
+        "slug": "getdeviceid"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "DeviceIdResult",
+      "slug": "deviceidresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "uniqueId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "manufacturer",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "osVersion",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}
