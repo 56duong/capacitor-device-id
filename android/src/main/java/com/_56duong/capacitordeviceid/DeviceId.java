@@ -1,5 +1,7 @@
 package com._56duong.capacitordeviceid;
 
+import android.content.Context;
+
 import com.getcapacitor.Logger;
 
 public class DeviceId {
