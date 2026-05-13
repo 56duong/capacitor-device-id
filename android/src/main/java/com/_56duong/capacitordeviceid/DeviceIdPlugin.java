@@ -11,10 +11,7 @@ public class DeviceIdPlugin extends Plugin {
 
     @PluginMethod
     public void getDeviceId(PluginCall call) {
-        String androidId = new DeviceId(getContext()).getDeviceId();
-        
-        JSObject ret = new JSObject();
-        ret.put("id", androidId);
-        call.resolve(ret);
+        JSObject deviceInfo = new DeviceId(getContext()).getDeviceId();
+        call.resolve(deviceInfo);
     }
 }

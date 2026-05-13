@@ -4,9 +4,33 @@ A Capacitor plugin to retrieve device id information.
 
 ## Install
 
+### Latest Version
+
 ```bash
-npm install capacitor-device-id
+npm install https://github.com/56duong/capacitor-device-id
 npx cap sync
+```
+
+### Specific Version (v0.0.1)
+
+```bash
+npm install https://github.com/56duong/capacitor-device-id#v0.0.1
+npx cap sync
+```
+
+## Example Usage
+
+```typescript
+import { DeviceId, DeviceIdResult } from 'capacitor-device-id';
+
+async function getDeviceInfo() {
+  try {
+    const result = await DeviceId.getDeviceId();
+    console.log(result);
+  } catch (err) {
+    console.error('Error getting device info:', err);
+  }
+}
 ```
 
 ## API
