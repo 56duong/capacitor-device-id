@@ -14,6 +14,10 @@
           {
             "name": "returns",
             "text": "Promise with device information"
+          },
+          {
+            "name": "example",
+            "text": "import { DeviceId } from 'capacitor-device-id';\n\nDeviceId.getDeviceId().then((result) => {\n  console.log(result);\n}).catch((error) => {\n  console.error('Error getting device ID:', error);\n});"
           }
         ],
         "docs": "Get device ID and information",
