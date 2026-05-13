@@ -26,7 +26,7 @@ import { DeviceId, DeviceIdResult } from 'capacitor-device-id';
 async function getDeviceInfo() {
   try {
     const result = await DeviceId.getDeviceId();
-    console.log(result);
+    console.log(result); // {"uniqueId":"505e998085b8cc91","manufacturer":"samsung","model":"SM-G570Y","osVersion":"8.0.0"}
   } catch (err) {
     console.error('Error getting device info:', err);
   }
