@@ -25,6 +25,35 @@
           "DeviceIdResult"
         ],
         "slug": "getdeviceid"
+      },
+      {
+        "name": "setKeyboardEnabled",
+        "signature": "(options: { enabled: boolean; }) => Promise<void>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": ": boolean } - true to show the keyboard, false to hide it",
+            "type": "{ enabled: boolean; }"
+          }
+        ],
+        "returns": "Promise<void>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options : boolean } - true to show the keyboard, false to hide it"
+          },
+          {
+            "name": "returns",
+            "text": "Promise that resolves when the operation is complete"
+          },
+          {
+            "name": "example",
+            "text": "import { DeviceId } from 'capacitor-device-id';\nDeviceId.setKeyboardEnabled({ enabled: true }).then(() => {\n  console.log('Keyboard enabled');\n}).catch((error) => {\n  console.error('Error setting keyboard enabled:', error);\n});"
+          }
+        ],
+        "docs": "Show or hide the keyboard",
+        "complexTypes": [],
+        "slug": "setkeyboardenabled"
       }
     ],
     "properties": []

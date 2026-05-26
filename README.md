@@ -38,6 +38,7 @@ async function getDeviceInfo() {
 <docgen-index>
 
 * [`getDeviceId()`](#getdeviceid)
+* [`setKeyboardEnabled(...)`](#setkeyboardenabled)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -54,6 +55,21 @@ getDeviceId() => Promise<DeviceIdResult>
 Get device ID and information
 
 **Returns:** <code>Promise&lt;<a href="#deviceidresult">DeviceIdResult</a>&gt;</code>
+
+--------------------
+
+
+### setKeyboardEnabled(...)
+
+```typescript
+setKeyboardEnabled(options: { enabled: boolean; }) => Promise<void>
+```
+
+Show or hide the keyboard
+
+| Param         | Type                               | Description                                               |
+| ------------- | ---------------------------------- | --------------------------------------------------------- |
+| **`options`** | <code>{ enabled: boolean; }</code> | : boolean } - true to show the keyboard, false to hide it |
 
 --------------------
 

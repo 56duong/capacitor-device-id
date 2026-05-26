@@ -12,6 +12,22 @@ export interface DeviceIdPlugin {
    * });
    */
   getDeviceId(): Promise<DeviceIdResult>;
+
+  /**
+   * Show or hide the keyboard
+   * @param options { enabled: boolean } - true to show the keyboard, false to hide it
+   * @returns Promise that resolves when the operation is complete
+   * @example
+   * import { DeviceId } from 'capacitor-device-id';
+   * DeviceId.setKeyboardEnabled({ enabled: true }).then(() => {
+   *   console.log('Keyboard enabled');
+   * }).catch((error) => {
+   *   console.error('Error setting keyboard enabled:', error);
+   * });
+   */
+  setKeyboardEnabled(options: {
+    enabled: boolean;
+  }): Promise<void>;
 }
 
 export interface DeviceIdResult {

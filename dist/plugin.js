@@ -9,6 +9,9 @@ var capacitorDeviceId = (function (exports, core) {
         async getDeviceId() {
             throw new Error('Method not implemented.');
         }
+        async setKeyboardEnabled() {
+            throw new Error('Not supported on web');
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({
