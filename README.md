@@ -39,6 +39,9 @@ async function getDeviceInfo() {
 
 * [`getDeviceId()`](#getdeviceid)
 * [`setKeyboardEnabled(...)`](#setkeyboardenabled)
+* [`showFloatingButton()`](#showfloatingbutton)
+* [`openWifiSettings()`](#openwifisettings)
+* [`openTeamViewer(...)`](#openteamviewer)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -70,6 +73,43 @@ Show or hide the keyboard
 | Param         | Type                               | Description                                               |
 | ------------- | ---------------------------------- | --------------------------------------------------------- |
 | **`options`** | <code>{ enabled: boolean; }</code> | : boolean } - true to show the keyboard, false to hide it |
+
+--------------------
+
+
+### showFloatingButton()
+
+```typescript
+showFloatingButton() => Promise<void>
+```
+
+Show floating overlay back button
+
+--------------------
+
+
+### openWifiSettings()
+
+```typescript
+openWifiSettings() => Promise<void>
+```
+
+Open Android Wi-Fi settings
+
+--------------------
+
+
+### openTeamViewer(...)
+
+```typescript
+openTeamViewer(options?: { delay?: number | undefined; } | undefined) => Promise<void>
+```
+
+Open TeamViewer QuickSupport
+
+| Param         | Type                             |
+| ------------- | -------------------------------- |
+| **`options`** | <code>{ delay?: number; }</code> |
 
 --------------------
 

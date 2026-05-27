@@ -12,6 +12,15 @@ var capacitorDeviceId = (function (exports, core) {
         async setKeyboardEnabled() {
             throw new Error('Not supported on web');
         }
+        async showFloatingButton() {
+            throw new Error('Not supported on web');
+        }
+        async openWifiSettings() {
+            throw new Error('Not supported on web');
+        }
+        async openTeamViewer() {
+            throw new Error('Not supported on web');
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({

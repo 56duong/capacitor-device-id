@@ -27,6 +27,20 @@ export interface DeviceIdPlugin {
     setKeyboardEnabled(options: {
         enabled: boolean;
     }): Promise<void>;
+    /**
+     * Show floating overlay back button
+     */
+    showFloatingButton(): Promise<void>;
+    /**
+     * Open Android Wi-Fi settings
+     */
+    openWifiSettings(): Promise<void>;
+    /**
+     * Open TeamViewer QuickSupport
+     */
+    openTeamViewer(options?: {
+        delay?: number;
+    }): Promise<void>;
 }
 export interface DeviceIdResult {
     uniqueId: string;

@@ -6,5 +6,14 @@ export class DeviceIdWeb extends WebPlugin {
     async setKeyboardEnabled() {
         throw new Error('Not supported on web');
     }
+    async showFloatingButton() {
+        throw new Error('Not supported on web');
+    }
+    async openWifiSettings() {
+        throw new Error('Not supported on web');
+    }
+    async openTeamViewer() {
+        throw new Error('Not supported on web');
+    }
 }
 //# sourceMappingURL=web.js.map

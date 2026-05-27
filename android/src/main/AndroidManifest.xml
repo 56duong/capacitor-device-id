@@ -1,3 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-feature android:name="android.hardware.usb.host" />
+
+  <!-- Overlay floating button -->
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+  <application>
+    <!-- Floating overlay service -->
+    <service android:name=".FloatingService" android:exported="false" />
+  </application>
+
 </manifest>

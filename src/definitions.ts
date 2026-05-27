@@ -28,6 +28,43 @@ export interface DeviceIdPlugin {
   setKeyboardEnabled(options: {
     enabled: boolean;
   }): Promise<void>;
+
+  /**
+   * Show floating overlay back button
+   */
+  showFloatingButton(): Promise<void>;
+
+  /**
+   * Open Android Wi-Fi settings
+   */
+  openWifiSettings(): Promise<void>;
+
+  /**
+   * Open TeamViewer QuickSupport
+   */
+  openTeamViewer(options?: {
+    delay?: number;
+  }): Promise<void>;
+
+  // scanUsb(): Promise<ScanUsbResult>;
+
+  // addListener(
+  //   eventName: 'usbAttached',
+  //   listenerFunc: (data: ScanUsbResult) => void,
+  // ): Promise<any>;
+
+  // addListener(
+  //   eventName: 'usbDetached',
+  //   listenerFunc: () => void,
+  // ): Promise<any>;
+
+  // readUsbFile(options: {
+  //   path: string;
+  // }): Promise<{
+  //   data: string;
+  //   name: string;
+  //   path: string;
+  // }>;
 }
 
 export interface DeviceIdResult {
@@ -36,3 +73,20 @@ export interface DeviceIdResult {
   model: string;
   osVersion: string;
 }
+
+// export interface UsbFile {
+//   name: string;
+//   path: string;
+//   isDirectory: boolean;
+//   size: number;
+// }
+
+// export interface UsbDevice {
+//   path: string;
+//   name: string;
+//   files: UsbFile[];
+// }
+
+// export interface ScanUsbResult {
+//   devices: UsbDevice[];
+// }

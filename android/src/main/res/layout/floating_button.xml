@@ -1,0 +1,7 @@
+<ImageView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="60dp"
+  android:layout_height="60dp"
+  android:src="@android:drawable/ic_media_previous"
+  android:background="@android:color/holo_blue_dark"
+  />

@@ -54,6 +54,42 @@
         "docs": "Show or hide the keyboard",
         "complexTypes": [],
         "slug": "setkeyboardenabled"
+      },
+      {
+        "name": "showFloatingButton",
+        "signature": "() => Promise<void>",
+        "parameters": [],
+        "returns": "Promise<void>",
+        "tags": [],
+        "docs": "Show floating overlay back button",
+        "complexTypes": [],
+        "slug": "showfloatingbutton"
+      },
+      {
+        "name": "openWifiSettings",
+        "signature": "() => Promise<void>",
+        "parameters": [],
+        "returns": "Promise<void>",
+        "tags": [],
+        "docs": "Open Android Wi-Fi settings",
+        "complexTypes": [],
+        "slug": "openwifisettings"
+      },
+      {
+        "name": "openTeamViewer",
+        "signature": "(options?: { delay?: number | undefined; } | undefined) => Promise<void>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ delay?: number | undefined; } | undefined"
+          }
+        ],
+        "returns": "Promise<void>",
+        "tags": [],
+        "docs": "Open TeamViewer QuickSupport",
+        "complexTypes": [],
+        "slug": "openteamviewer"
       }
     ],
     "properties": []
