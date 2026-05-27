@@ -42,9 +42,7 @@ export interface DeviceIdPlugin {
   /**
    * Open TeamViewer QuickSupport
    */
-  openTeamViewer(options?: {
-    delay?: number;
-  }): Promise<void>;
+  openTeamViewer(): Promise<void>;
 
   // scanUsb(): Promise<ScanUsbResult>;
 

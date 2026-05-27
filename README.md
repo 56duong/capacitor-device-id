@@ -41,7 +41,7 @@ async function getDeviceInfo() {
 * [`setKeyboardEnabled(...)`](#setkeyboardenabled)
 * [`showFloatingButton()`](#showfloatingbutton)
 * [`openWifiSettings()`](#openwifisettings)
-* [`openTeamViewer(...)`](#openteamviewer)
+* [`openTeamViewer()`](#openteamviewer)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -99,17 +99,13 @@ Open Android Wi-Fi settings
 --------------------
 
 
-### openTeamViewer(...)
+### openTeamViewer()
 
 ```typescript
-openTeamViewer(options?: { delay?: number | undefined; } | undefined) => Promise<void>
+openTeamViewer() => Promise<void>
 ```
 
 Open TeamViewer QuickSupport
-
-| Param         | Type                             |
-| ------------- | -------------------------------- |
-| **`options`** | <code>{ delay?: number; }</code> |
 
 --------------------
 

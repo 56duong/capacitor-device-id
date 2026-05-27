@@ -77,14 +77,8 @@
       },
       {
         "name": "openTeamViewer",
-        "signature": "(options?: { delay?: number | undefined; } | undefined) => Promise<void>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ delay?: number | undefined; } | undefined"
-          }
-        ],
+        "signature": "() => Promise<void>",
+        "parameters": [],
         "returns": "Promise<void>",
         "tags": [],
         "docs": "Open TeamViewer QuickSupport",
