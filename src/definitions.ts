@@ -44,25 +44,40 @@ export interface DeviceIdPlugin {
    */
   openTeamViewer(): Promise<void>;
 
-  // scanUsb(): Promise<ScanUsbResult>;
+  /**
+   * Scan connected USB storage devices
+   */
+  scanUsb(): Promise<ScanUsbResult>;
 
-  // addListener(
-  //   eventName: 'usbAttached',
-  //   listenerFunc: (data: ScanUsbResult) => void,
-  // ): Promise<any>;
+  /**
+   * List files/folders inside a directory
+   *
+   * @example
+   * const result = await DeviceId.listFiles({
+   *   path: '/storage/601B-309F'
+   * });
+   *
+   * console.log(result.files);
+   */
+  listFiles(options: {
+    path: string;
+  }): Promise<ListFilesResult>;
 
-  // addListener(
-  //   eventName: 'usbDetached',
-  //   listenerFunc: () => void,
-  // ): Promise<any>;
+  /**
+   * USB attached event
+   */
+  addListener(
+    eventName: 'usbAttached',
+    listenerFunc: (data: ScanUsbResult) => void,
+  ): Promise<any>;
 
-  // readUsbFile(options: {
-  //   path: string;
-  // }): Promise<{
-  //   data: string;
-  //   name: string;
-  //   path: string;
-  // }>;
+  /**
+   * USB detached event
+   */
+  addListener(
+    eventName: 'usbDetached',
+    listenerFunc: () => void,
+  ): Promise<any>;
 }
 
 export interface DeviceIdResult {
@@ -72,19 +87,22 @@ export interface DeviceIdResult {
   osVersion: string;
 }
 
-// export interface UsbFile {
-//   name: string;
-//   path: string;
-//   isDirectory: boolean;
-//   size: number;
-// }
+export interface UsbFile {
+  name: string;
+  path: string;
+  isDirectory: boolean;
+  size: number;
+}
 
-// export interface UsbDevice {
-//   path: string;
-//   name: string;
-//   files: UsbFile[];
-// }
+export interface UsbDevice {
+  path: string;
+  name: string;
+}
 
-// export interface ScanUsbResult {
-//   devices: UsbDevice[];
-// }
+export interface ScanUsbResult {
+  devices: UsbDevice[];
+}
+
+export interface ListFilesResult {
+  files: UsbFile[];
+}

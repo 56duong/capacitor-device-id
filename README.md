@@ -42,6 +42,10 @@ async function getDeviceInfo() {
 * [`showFloatingButton()`](#showfloatingbutton)
 * [`openWifiSettings()`](#openwifisettings)
 * [`openTeamViewer()`](#openteamviewer)
+* [`scanUsb()`](#scanusb)
+* [`listFiles(...)`](#listfiles)
+* [`addListener('usbAttached', ...)`](#addlistenerusbattached-)
+* [`addListener('usbDetached', ...)`](#addlistenerusbdetached-)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -110,6 +114,72 @@ Open TeamViewer QuickSupport
 --------------------
 
 
+### scanUsb()
+
+```typescript
+scanUsb() => Promise<ScanUsbResult>
+```
+
+Scan connected USB storage devices
+
+**Returns:** <code>Promise&lt;<a href="#scanusbresult">ScanUsbResult</a>&gt;</code>
+
+--------------------
+
+
+### listFiles(...)
+
+```typescript
+listFiles(options: { path: string; }) => Promise<ListFilesResult>
+```
+
+List files/folders inside a directory
+
+| Param         | Type                           |
+| ------------- | ------------------------------ |
+| **`options`** | <code>{ path: string; }</code> |
+
+**Returns:** <code>Promise&lt;<a href="#listfilesresult">ListFilesResult</a>&gt;</code>
+
+--------------------
+
+
+### addListener('usbAttached', ...)
+
+```typescript
+addListener(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void) => Promise<any>
+```
+
+USB attached event
+
+| Param              | Type                                                                       |
+| ------------------ | -------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'usbAttached'</code>                                                 |
+| **`listenerFunc`** | <code>(data: <a href="#scanusbresult">ScanUsbResult</a>) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### addListener('usbDetached', ...)
+
+```typescript
+addListener(eventName: 'usbDetached', listenerFunc: () => void) => Promise<any>
+```
+
+USB detached event
+
+| Param              | Type                       |
+| ------------------ | -------------------------- |
+| **`eventName`**    | <code>'usbDetached'</code> |
+| **`listenerFunc`** | <code>() =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -121,5 +191,37 @@ Open TeamViewer QuickSupport
 | **`manufacturer`** | <code>string</code> |
 | **`model`**        | <code>string</code> |
 | **`osVersion`**    | <code>string</code> |
+
+
+#### ScanUsbResult
+
+| Prop          | Type                     |
+| ------------- | ------------------------ |
+| **`devices`** | <code>UsbDevice[]</code> |
+
+
+#### UsbDevice
+
+| Prop       | Type                |
+| ---------- | ------------------- |
+| **`path`** | <code>string</code> |
+| **`name`** | <code>string</code> |
+
+
+#### ListFilesResult
+
+| Prop        | Type                   |
+| ----------- | ---------------------- |
+| **`files`** | <code>UsbFile[]</code> |
+
+
+#### UsbFile
+
+| Prop              | Type                 |
+| ----------------- | -------------------- |
+| **`name`**        | <code>string</code>  |
+| **`path`**        | <code>string</code>  |
+| **`isDirectory`** | <code>boolean</code> |
+| **`size`**        | <code>number</code>  |
 
 </docgen-api>

@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { DeviceIdPlugin, DeviceIdResult } from './definitions';
+import type { DeviceIdPlugin, DeviceIdResult, ScanUsbResult } from './definitions';
 
 export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
 
@@ -24,16 +24,12 @@ export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     throw new Error('Not supported on web');
   }
 
-  // scanUsb(): Promise<ScanUsbResult> {
-  //   throw new Error('Method not implemented.');
-  // }
+  scanUsb(): Promise<ScanUsbResult> {
+    throw new Error('Method not implemented.');
+  }
 
-  // async readUsbFile(): Promise<any> {
-  //   throw new Error('Not supported on web');
-  // }
-
-  // async hideKeyboard(): Promise<void> {
-  //   throw new Error('Not supported on web');
-  // }
+  async listFiles(): Promise<any> {
+    throw new Error('Not supported on web');
+  }
 
 }

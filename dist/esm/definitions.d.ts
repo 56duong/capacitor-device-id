@@ -39,10 +39,51 @@ export interface DeviceIdPlugin {
      * Open TeamViewer QuickSupport
      */
     openTeamViewer(): Promise<void>;
+    /**
+     * Scan connected USB storage devices
+     */
+    scanUsb(): Promise<ScanUsbResult>;
+    /**
+     * List files/folders inside a directory
+     *
+     * @example
+     * const result = await DeviceId.listFiles({
+     *   path: '/storage/601B-309F'
+     * });
+     *
+     * console.log(result.files);
+     */
+    listFiles(options: {
+        path: string;
+    }): Promise<ListFilesResult>;
+    /**
+     * USB attached event
+     */
+    addListener(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void): Promise<any>;
+    /**
+     * USB detached event
+     */
+    addListener(eventName: 'usbDetached', listenerFunc: () => void): Promise<any>;
 }
 export interface DeviceIdResult {
     uniqueId: string;
     manufacturer: string;
     model: string;
     osVersion: string;
+}
+export interface UsbFile {
+    name: string;
+    path: string;
+    isDirectory: boolean;
+    size: number;
+}
+export interface UsbDevice {
+    path: string;
+    name: string;
+}
+export interface ScanUsbResult {
+    devices: UsbDevice[];
+}
+export interface ListFilesResult {
+    files: UsbFile[];
 }

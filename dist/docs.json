@@ -84,6 +84,85 @@
         "docs": "Open TeamViewer QuickSupport",
         "complexTypes": [],
         "slug": "openteamviewer"
+      },
+      {
+        "name": "scanUsb",
+        "signature": "() => Promise<ScanUsbResult>",
+        "parameters": [],
+        "returns": "Promise<ScanUsbResult>",
+        "tags": [],
+        "docs": "Scan connected USB storage devices",
+        "complexTypes": [
+          "ScanUsbResult"
+        ],
+        "slug": "scanusb"
+      },
+      {
+        "name": "listFiles",
+        "signature": "(options: { path: string; }) => Promise<ListFilesResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ path: string; }"
+          }
+        ],
+        "returns": "Promise<ListFilesResult>",
+        "tags": [
+          {
+            "name": "example",
+            "text": "const result = await DeviceId.listFiles({\n  path: '/storage/601B-309F'\n});\n\nconsole.log(result.files);"
+          }
+        ],
+        "docs": "List files/folders inside a directory",
+        "complexTypes": [
+          "ListFilesResult"
+        ],
+        "slug": "listfiles"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void) => Promise<any>",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'usbAttached'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(data: ScanUsbResult) => void"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "USB attached event",
+        "complexTypes": [
+          "ScanUsbResult"
+        ],
+        "slug": "addlistenerusbattached-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'usbDetached', listenerFunc: () => void) => Promise<any>",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'usbDetached'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "() => void"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "USB detached event",
+        "complexTypes": [],
+        "slug": "addlistenerusbdetached-"
       }
     ],
     "properties": []
@@ -123,6 +202,102 @@
           "docs": "",
           "complexTypes": [],
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "ScanUsbResult",
+      "slug": "scanusbresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "devices",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "UsbDevice"
+          ],
+          "type": "UsbDevice[]"
+        }
+      ]
+    },
+    {
+      "name": "UsbDevice",
+      "slug": "usbdevice",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "path",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "ListFilesResult",
+      "slug": "listfilesresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "files",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "UsbFile"
+          ],
+          "type": "UsbFile[]"
+        }
+      ]
+    },
+    {
+      "name": "UsbFile",
+      "slug": "usbfile",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "name",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "path",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "isDirectory",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "size",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
         }
       ]
     }
