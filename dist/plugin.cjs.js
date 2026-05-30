@@ -28,6 +28,9 @@ class DeviceIdWeb extends core.WebPlugin {
     async listFiles() {
         throw new Error('Not supported on web');
     }
+    async readUsbFile() {
+        throw new Error('Not supported on web');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

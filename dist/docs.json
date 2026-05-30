@@ -98,29 +98,6 @@
         "slug": "scanusb"
       },
       {
-        "name": "listFiles",
-        "signature": "(options: { path: string; }) => Promise<ListFilesResult>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ path: string; }"
-          }
-        ],
-        "returns": "Promise<ListFilesResult>",
-        "tags": [
-          {
-            "name": "example",
-            "text": "const result = await DeviceId.listFiles({\n  path: '/storage/601B-309F'\n});\n\nconsole.log(result.files);"
-          }
-        ],
-        "docs": "List files/folders inside a directory",
-        "complexTypes": [
-          "ListFilesResult"
-        ],
-        "slug": "listfiles"
-      },
-      {
         "name": "addListener",
         "signature": "(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void) => Promise<any>",
         "parameters": [
@@ -163,6 +140,47 @@
         "docs": "USB detached event",
         "complexTypes": [],
         "slug": "addlistenerusbdetached-"
+      },
+      {
+        "name": "listFiles",
+        "signature": "(options: { path: string; }) => Promise<ListFilesResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ path: string; }"
+          }
+        ],
+        "returns": "Promise<ListFilesResult>",
+        "tags": [
+          {
+            "name": "example",
+            "text": "const result = await DeviceId.listFiles({\n  path: '/storage/601B-309F'\n});\n\nconsole.log(result.files);"
+          }
+        ],
+        "docs": "List files/folders inside a directory",
+        "complexTypes": [
+          "ListFilesResult"
+        ],
+        "slug": "listfiles"
+      },
+      {
+        "name": "readUsbFile",
+        "signature": "(options: { path: string; }) => Promise<ReadUsbFileResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ path: string; }"
+          }
+        ],
+        "returns": "Promise<ReadUsbFileResult>",
+        "tags": [],
+        "docs": "Read a file from USB storage",
+        "complexTypes": [
+          "ReadUsbFileResult"
+        ],
+        "slug": "readusbfile"
       }
     ],
     "properties": []
@@ -298,6 +316,36 @@
           "docs": "",
           "complexTypes": [],
           "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "ReadUsbFileResult",
+      "slug": "readusbfileresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "data",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "path",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
         }
       ]
     }

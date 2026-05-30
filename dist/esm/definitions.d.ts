@@ -44,6 +44,14 @@ export interface DeviceIdPlugin {
      */
     scanUsb(): Promise<ScanUsbResult>;
     /**
+     * USB attached event
+     */
+    addListener(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void): Promise<any>;
+    /**
+     * USB detached event
+     */
+    addListener(eventName: 'usbDetached', listenerFunc: () => void): Promise<any>;
+    /**
      * List files/folders inside a directory
      *
      * @example
@@ -57,13 +65,11 @@ export interface DeviceIdPlugin {
         path: string;
     }): Promise<ListFilesResult>;
     /**
-     * USB attached event
+     * Read a file from USB storage
      */
-    addListener(eventName: 'usbAttached', listenerFunc: (data: ScanUsbResult) => void): Promise<any>;
-    /**
-     * USB detached event
-     */
-    addListener(eventName: 'usbDetached', listenerFunc: () => void): Promise<any>;
+    readUsbFile(options: {
+        path: string;
+    }): Promise<ReadUsbFileResult>;
 }
 export interface DeviceIdResult {
     uniqueId: string;
@@ -86,4 +92,9 @@ export interface ScanUsbResult {
 }
 export interface ListFilesResult {
     files: UsbFile[];
+}
+export interface ReadUsbFileResult {
+    data: string;
+    name: string;
+    path: string;
 }

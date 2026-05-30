@@ -32,4 +32,8 @@ export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     throw new Error('Not supported on web');
   }
 
+  async readUsbFile(): Promise<any> {
+    throw new Error('Not supported on web');
+  }
+
 }

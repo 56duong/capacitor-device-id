@@ -21,5 +21,8 @@ export class DeviceIdWeb extends WebPlugin {
     async listFiles() {
         throw new Error('Not supported on web');
     }
+    async readUsbFile() {
+        throw new Error('Not supported on web');
+    }
 }
 //# sourceMappingURL=web.js.map

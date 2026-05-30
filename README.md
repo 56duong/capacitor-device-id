@@ -43,9 +43,10 @@ async function getDeviceInfo() {
 * [`openWifiSettings()`](#openwifisettings)
 * [`openTeamViewer()`](#openteamviewer)
 * [`scanUsb()`](#scanusb)
-* [`listFiles(...)`](#listfiles)
 * [`addListener('usbAttached', ...)`](#addlistenerusbattached-)
 * [`addListener('usbDetached', ...)`](#addlistenerusbdetached-)
+* [`listFiles(...)`](#listfiles)
+* [`readUsbFile(...)`](#readusbfile)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -127,23 +128,6 @@ Scan connected USB storage devices
 --------------------
 
 
-### listFiles(...)
-
-```typescript
-listFiles(options: { path: string; }) => Promise<ListFilesResult>
-```
-
-List files/folders inside a directory
-
-| Param         | Type                           |
-| ------------- | ------------------------------ |
-| **`options`** | <code>{ path: string; }</code> |
-
-**Returns:** <code>Promise&lt;<a href="#listfilesresult">ListFilesResult</a>&gt;</code>
-
---------------------
-
-
 ### addListener('usbAttached', ...)
 
 ```typescript
@@ -176,6 +160,40 @@ USB detached event
 | **`listenerFunc`** | <code>() =&gt; void</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### listFiles(...)
+
+```typescript
+listFiles(options: { path: string; }) => Promise<ListFilesResult>
+```
+
+List files/folders inside a directory
+
+| Param         | Type                           |
+| ------------- | ------------------------------ |
+| **`options`** | <code>{ path: string; }</code> |
+
+**Returns:** <code>Promise&lt;<a href="#listfilesresult">ListFilesResult</a>&gt;</code>
+
+--------------------
+
+
+### readUsbFile(...)
+
+```typescript
+readUsbFile(options: { path: string; }) => Promise<ReadUsbFileResult>
+```
+
+Read a file from USB storage
+
+| Param         | Type                           |
+| ------------- | ------------------------------ |
+| **`options`** | <code>{ path: string; }</code> |
+
+**Returns:** <code>Promise&lt;<a href="#readusbfileresult">ReadUsbFileResult</a>&gt;</code>
 
 --------------------
 
@@ -223,5 +241,14 @@ USB detached event
 | **`path`**        | <code>string</code>  |
 | **`isDirectory`** | <code>boolean</code> |
 | **`size`**        | <code>number</code>  |
+
+
+#### ReadUsbFileResult
+
+| Prop       | Type                |
+| ---------- | ------------------- |
+| **`data`** | <code>string</code> |
+| **`name`** | <code>string</code> |
+| **`path`** | <code>string</code> |
 
 </docgen-api>

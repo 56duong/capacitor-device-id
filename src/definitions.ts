@@ -50,20 +50,6 @@ export interface DeviceIdPlugin {
   scanUsb(): Promise<ScanUsbResult>;
 
   /**
-   * List files/folders inside a directory
-   *
-   * @example
-   * const result = await DeviceId.listFiles({
-   *   path: '/storage/601B-309F'
-   * });
-   *
-   * console.log(result.files);
-   */
-  listFiles(options: {
-    path: string;
-  }): Promise<ListFilesResult>;
-
-  /**
    * USB attached event
    */
   addListener(
@@ -78,6 +64,27 @@ export interface DeviceIdPlugin {
     eventName: 'usbDetached',
     listenerFunc: () => void,
   ): Promise<any>;
+
+  /**
+   * List files/folders inside a directory
+   *
+   * @example
+   * const result = await DeviceId.listFiles({
+   *   path: '/storage/601B-309F'
+   * });
+   *
+   * console.log(result.files);
+   */
+  listFiles(options: {
+    path: string;
+  }): Promise<ListFilesResult>;
+
+  /**
+   * Read a file from USB storage
+   */
+  readUsbFile(options: {
+    path: string;
+  }): Promise<ReadUsbFileResult>;
 }
 
 export interface DeviceIdResult {
@@ -105,4 +112,10 @@ export interface ScanUsbResult {
 
 export interface ListFilesResult {
   files: UsbFile[];
+}
+
+export interface ReadUsbFileResult {
+  data: string;
+  name: string;
+  path: string;
 }

@@ -8,4 +8,5 @@ export declare class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     openTeamViewer(): Promise<void>;
     scanUsb(): Promise<ScanUsbResult>;
     listFiles(): Promise<any>;
+    readUsbFile(): Promise<any>;
 }

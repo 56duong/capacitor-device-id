@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 
 import com.getcapacitor.JSArray;
@@ -20,6 +21,7 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import android.app.Activity;
 import android.view.WindowManager;
@@ -257,6 +259,59 @@ public class DeviceIdPlugin extends Plugin {
             call.resolve(ret);
         } catch (Exception ex) {
             call.reject(ex.getMessage(), ex);
+        }
+    }
+
+    @PluginMethod
+    public void readUsbFile(PluginCall call) {
+        try {
+            String path = call.getString("path");
+            if (path == null || path.isEmpty()) {
+                call.reject("Path is required");
+                return;
+            }
+
+            File file = new File(path);
+
+            if (!file.exists()) {
+                call.reject("File does not exist");
+                return;
+            }
+
+            if (!file.isFile()) {
+                call.reject("Path is not a file");
+                return;
+            }
+
+            byte[] bytes = new byte[(int) file.length()];
+
+            try (FileInputStream fis = new FileInputStream(file)) {
+                int offset = 0;
+                int read;
+
+                while (offset < bytes.length
+                        && (read = fis.read(bytes, offset, bytes.length - offset)) != -1) {
+                    offset += read;
+                }
+
+                if (offset != bytes.length) {
+                    call.reject("Failed to read entire file");
+                    return;
+                }
+            }
+
+            String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
+
+            JSObject ret = new JSObject();
+            ret.put("data", base64);
+            ret.put("name", file.getName());
+            ret.put("path", file.getAbsolutePath());
+            ret.put("size", file.length());
+
+            call.resolve(ret);
+
+        } catch (Exception ex) {
+            call.reject("Failed to read file: " + ex.getMessage(), ex);
         }
     }
 
