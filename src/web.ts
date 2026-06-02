@@ -5,35 +5,39 @@ import type { DeviceIdPlugin, DeviceIdResult, ScanUsbResult } from './definition
 export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
 
   async getDeviceId(): Promise<DeviceIdResult> {
-    throw new Error('Method not implemented.');
+    throw new Error('getDeviceId is not supported on web');
   }
 
   async setKeyboardEnabled(): Promise<void> {
-    throw new Error('Not supported on web');
+    throw new Error('setKeyboardEnabled is not supported on web');
   }
 
   async showFloatingButton(): Promise<void> {
-    throw new Error('Not supported on web');
+    throw new Error('showFloatingButton is not supported on web');
   }
 
   async openWifiSettings(): Promise<void> {
-    throw new Error('Not supported on web');
+    throw new Error('openWifiSettings is not supported on web');
+  }
+
+  async setBluetoothEnabled(): Promise<void> {
+    throw new Error('setBluetoothEnabled is not supported on web');
   }
 
   async openTeamViewer(): Promise<void> {
-    throw new Error('Not supported on web');
+    throw new Error('openTeamViewer is not supported on web');
   }
 
   scanUsb(): Promise<ScanUsbResult> {
-    throw new Error('Method not implemented.');
+    throw new Error('scanUsb is not supported on web');
   }
 
   async listFiles(): Promise<any> {
-    throw new Error('Not supported on web');
+    throw new Error('listFiles is not supported on web');
   }
 
   async readUsbFile(): Promise<any> {
-    throw new Error('Not supported on web');
+    throw new Error('readUsbFile is not supported on web');
   }
 
 }

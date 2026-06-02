@@ -76,6 +76,31 @@
         "slug": "openwifisettings"
       },
       {
+        "name": "setBluetoothEnabled",
+        "signature": "(options: { enabled: boolean; }) => Promise<void>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ enabled: boolean; }"
+          }
+        ],
+        "returns": "Promise<void>",
+        "tags": [
+          {
+            "name": "param",
+            "text": "options.enabled - true: enable Bluetooth\n- false: disable Bluetooth"
+          },
+          {
+            "name": "example",
+            "text": "await DeviceId.setBluetoothEnabled({\n  enabled: true\n});\n\nawait DeviceId.setBluetoothEnabled({\n  enabled: false\n});"
+          }
+        ],
+        "docs": "Toggle Bluetooth on/off",
+        "complexTypes": [],
+        "slug": "setbluetoothenabled"
+      },
+      {
         "name": "openTeamViewer",
         "signature": "() => Promise<void>",
         "parameters": [],

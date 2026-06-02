@@ -38,6 +38,26 @@ export interface DeviceIdPlugin {
    * Open Android Wi-Fi settings
    */
   openWifiSettings(): Promise<void>;
+  
+  /**
+   * Toggle Bluetooth on/off
+   *
+   * @param options.enabled
+   * - true: enable Bluetooth
+   * - false: disable Bluetooth
+   *
+   * @example
+   * await DeviceId.setBluetoothEnabled({
+   *   enabled: true
+   * });
+   *
+   * await DeviceId.setBluetoothEnabled({
+   *   enabled: false
+   * });
+   */
+  setBluetoothEnabled(options: {
+    enabled: boolean;
+  }): Promise<void>;
 
   /**
    * Open TeamViewer QuickSupport

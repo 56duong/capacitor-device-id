@@ -9,7 +9,10 @@
     <service android:name=".FloatingService" android:exported="false" />
   </application>
 
+  <!-- usb-->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
+  <!-- bluetooth-->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 </manifest>

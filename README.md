@@ -41,6 +41,7 @@ async function getDeviceInfo() {
 * [`setKeyboardEnabled(...)`](#setkeyboardenabled)
 * [`showFloatingButton()`](#showfloatingbutton)
 * [`openWifiSettings()`](#openwifisettings)
+* [`setBluetoothEnabled(...)`](#setbluetoothenabled)
 * [`openTeamViewer()`](#openteamviewer)
 * [`scanUsb()`](#scanusb)
 * [`addListener('usbAttached', ...)`](#addlistenerusbattached-)
@@ -100,6 +101,21 @@ openWifiSettings() => Promise<void>
 ```
 
 Open Android Wi-Fi settings
+
+--------------------
+
+
+### setBluetoothEnabled(...)
+
+```typescript
+setBluetoothEnabled(options: { enabled: boolean; }) => Promise<void>
+```
+
+Toggle Bluetooth on/off
+
+| Param         | Type                               |
+| ------------- | ---------------------------------- |
+| **`options`** | <code>{ enabled: boolean; }</code> |
 
 --------------------
 

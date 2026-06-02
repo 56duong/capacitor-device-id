@@ -1,9 +1,12 @@
 package com._56duong.capacitordeviceid;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Build;
@@ -25,6 +28,8 @@ import java.io.FileInputStream;
 
 import android.app.Activity;
 import android.view.WindowManager;
+
+import androidx.core.content.ContextCompat;
 
 @CapacitorPlugin(name = "DeviceId")
 public class DeviceIdPlugin extends Plugin {
@@ -99,6 +104,36 @@ public class DeviceIdPlugin extends Plugin {
         getContext().startActivity(wifiIntent);
 
         call.resolve();
+    }
+
+
+
+    @PluginMethod
+    public void setBluetoothEnabled(PluginCall call) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                call.reject("BLUETOOTH_CONNECT permission not granted");
+                return;
+            }
+        }
+        try {
+            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+            if (adapter == null) {
+                call.reject("Bluetooth not supported");
+                return;
+            }
+            boolean enabled = Boolean.TRUE.equals(call.getBoolean("enabled", true));
+            if (enabled) {
+                adapter.enable();
+            } else {
+                adapter.disable();
+            }
+            call.resolve();
+        } catch (SecurityException e) {
+            call.reject("Bluetooth permission denied", e);
+        } catch (Exception e) {
+            call.reject(e.toString(), e);
+        }
     }
 
 

@@ -5,6 +5,7 @@ export declare class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     setKeyboardEnabled(): Promise<void>;
     showFloatingButton(): Promise<void>;
     openWifiSettings(): Promise<void>;
+    setBluetoothEnabled(): Promise<void>;
     openTeamViewer(): Promise<void>;
     scanUsb(): Promise<ScanUsbResult>;
     listFiles(): Promise<any>;
