@@ -32,6 +32,21 @@ export interface DeviceIdPlugin {
      */
     showFloatingButton(): Promise<void>;
     /**
+     * Enable or disable keyboard overlay button
+     * - enabled: true → show floating button when keyboard is visible
+     * - enabled: false → disable completely
+     *
+     * @example
+     * await DeviceId.setKeyboardOverlayConfig({ enabled: true });
+     */
+    setKeyboardOverlayConfig(options: {
+        enabled: boolean;
+    }): Promise<void>;
+    /**
+     * Manually hide keyboard overlay button
+     */
+    hideKeyboardOverlay(): Promise<void>;
+    /**
      * Open Android Wi-Fi settings
      */
     openWifiSettings(): Promise<void>;

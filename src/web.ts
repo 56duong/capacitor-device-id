@@ -16,6 +16,14 @@ export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     throw new Error('showFloatingButton is not supported on web');
   }
 
+  async setKeyboardOverlayConfig(): Promise<void> {
+    throw new Error('setKeyboardOverlayConfig is not supported on web');
+  }
+
+  async hideKeyboardOverlay(): Promise<void> {
+    throw new Error('hideKeyboardOverlay is not supported on web');
+  }
+
   async openWifiSettings(): Promise<void> {
     throw new Error('openWifiSettings is not supported on web');
   }
