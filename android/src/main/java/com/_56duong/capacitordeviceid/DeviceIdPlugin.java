@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.PixelFormat;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Build;
@@ -28,14 +27,9 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import android.app.Activity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 @CapacitorPlugin(name = "DeviceId")
 public class DeviceIdPlugin extends Plugin {
@@ -354,123 +348,6 @@ public class DeviceIdPlugin extends Plugin {
         } catch (Exception ex) {
             call.reject("Failed to read file: " + ex.getMessage(), ex);
         }
-    }
-
-
-
-//    Keyboard overlay button
-    private boolean keyboardOverlayEnabled = false;
-
-    private WindowManager windowManager;
-    private View floatingView;
-    private WindowManager.LayoutParams params;
-    private View rootView;
-
-    private void initKeyboardOverlay() {
-
-        Activity activity = getActivity();
-
-        if (floatingView != null) return;
-
-        windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-
-        floatingView = LayoutInflater.from(activity)
-                .inflate(R.layout.floating_button, null);
-
-        int type = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                : WindowManager.LayoutParams.TYPE_PHONE;
-
-        params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                type,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT
-        );
-
-        params.gravity = Gravity.END | Gravity.CENTER_VERTICAL;
-
-        floatingView.setVisibility(View.GONE);
-
-        floatingView.setOnClickListener(v -> {
-            activity.onBackPressed(); // hide keyboard
-        });
-
-        windowManager.addView(floatingView, params);
-    }
-
-    private void attachKeyboardListener() {
-
-        Activity activity = getActivity();
-
-        rootView = activity.getWindow().getDecorView();
-
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
-
-            if (!keyboardOverlayEnabled) return insets;
-
-            boolean imeVisible =
-                    insets.isVisible(WindowInsetsCompat.Type.ime());
-
-            activity.runOnUiThread(() -> {
-                if (floatingView != null) {
-                    floatingView.setVisibility(
-                            imeVisible ? View.VISIBLE : View.GONE
-                    );
-                }
-            });
-
-            return insets;
-        });
-    }
-
-    @PluginMethod
-    public void setKeyboardOverlayConfig(PluginCall call) {
-
-        boolean enabled = Boolean.TRUE.equals(call.getBoolean("enabled", false));
-
-        keyboardOverlayEnabled = enabled;
-
-        Activity activity = getActivity();
-
-        activity.runOnUiThread(() -> {
-
-            if (enabled) {
-
-                initKeyboardOverlay();
-                attachKeyboardListener();
-
-            } else {
-
-                if (floatingView != null) {
-                    floatingView.setVisibility(View.GONE);
-                }
-
-                if (windowManager != null && floatingView != null) {
-                    try {
-                        windowManager.removeView(floatingView);
-                    } catch (Exception ignored) {}
-                    floatingView = null;
-                }
-            }
-        });
-
-        call.resolve();
-    }
-
-    @PluginMethod
-    public void hideKeyboardOverlay(PluginCall call) {
-
-        Activity activity = getActivity();
-
-        activity.runOnUiThread(() -> {
-            if (floatingView != null) {
-                floatingView.setVisibility(View.GONE);
-            }
-        });
-
-        call.resolve();
     }
 
 }

@@ -17,7 +17,7 @@
           },
           {
             "name": "example",
-            "text": "import { DeviceId } from 'capacitor-device-id';\r\n\r\nDeviceId.getDeviceId().then((result) => {\r\n  console.log(result); // {\"uniqueId\":\"505e998085b8cc91\",\"manufacturer\":\"samsung\",\"model\":\"SM-G570Y\",\"osVersion\":\"8.0.0\"}\r\n}).catch((error) => {\r\n  console.error('Error getting device ID:', error);\r\n});"
+            "text": "import { DeviceId } from 'capacitor-device-id';\n\nDeviceId.getDeviceId().then((result) => {\n  console.log(result); // {\"uniqueId\":\"505e998085b8cc91\",\"manufacturer\":\"samsung\",\"model\":\"SM-G570Y\",\"osVersion\":\"8.0.0\"}\n}).catch((error) => {\n  console.error('Error getting device ID:', error);\n});"
           }
         ],
         "docs": "Get device ID and information",
@@ -48,7 +48,7 @@
           },
           {
             "name": "example",
-            "text": "import { DeviceId } from 'capacitor-device-id';\r\nDeviceId.setKeyboardEnabled({ enabled: true }).then(() => {\r\n  console.log('Keyboard enabled');\r\n}).catch((error) => {\r\n  console.error('Error setting keyboard enabled:', error);\r\n});"
+            "text": "import { DeviceId } from 'capacitor-device-id';\nDeviceId.setKeyboardEnabled({ enabled: true }).then(() => {\n  console.log('Keyboard enabled');\n}).catch((error) => {\n  console.error('Error setting keyboard enabled:', error);\n});"
           }
         ],
         "docs": "Show or hide the keyboard",
@@ -64,37 +64,6 @@
         "docs": "Show floating overlay back button",
         "complexTypes": [],
         "slug": "showfloatingbutton"
-      },
-      {
-        "name": "setKeyboardOverlayConfig",
-        "signature": "(options: { enabled: boolean; }) => Promise<void>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ enabled: boolean; }"
-          }
-        ],
-        "returns": "Promise<void>",
-        "tags": [
-          {
-            "name": "example",
-            "text": "await DeviceId.setKeyboardOverlayConfig({ enabled: true });"
-          }
-        ],
-        "docs": "Enable or disable keyboard overlay button\r\n- enabled: true → show floating button when keyboard is visible\r\n- enabled: false → disable completely",
-        "complexTypes": [],
-        "slug": "setkeyboardoverlayconfig"
-      },
-      {
-        "name": "hideKeyboardOverlay",
-        "signature": "() => Promise<void>",
-        "parameters": [],
-        "returns": "Promise<void>",
-        "tags": [],
-        "docs": "Manually hide keyboard overlay button",
-        "complexTypes": [],
-        "slug": "hidekeyboardoverlay"
       },
       {
         "name": "openWifiSettings",
@@ -120,11 +89,11 @@
         "tags": [
           {
             "name": "param",
-            "text": "options.enabled - true: enable Bluetooth\r\n- false: disable Bluetooth"
+            "text": "options.enabled - true: enable Bluetooth\n- false: disable Bluetooth"
           },
           {
             "name": "example",
-            "text": "await DeviceId.setBluetoothEnabled({\r\n  enabled: true\r\n});\r\n\r\nawait DeviceId.setBluetoothEnabled({\r\n  enabled: false\r\n});"
+            "text": "await DeviceId.setBluetoothEnabled({\n  enabled: true\n});\n\nawait DeviceId.setBluetoothEnabled({\n  enabled: false\n});"
           }
         ],
         "docs": "Toggle Bluetooth on/off",
@@ -211,7 +180,7 @@
         "tags": [
           {
             "name": "example",
-            "text": "const result = await DeviceId.listFiles({\r\n  path: '/storage/601B-309F'\r\n});\r\n\r\nconsole.log(result.files);"
+            "text": "const result = await DeviceId.listFiles({\n  path: '/storage/601B-309F'\n});\n\nconsole.log(result.files);"
           }
         ],
         "docs": "List files/folders inside a directory",

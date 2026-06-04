@@ -4,8 +4,6 @@ export declare class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     getDeviceId(): Promise<DeviceIdResult>;
     setKeyboardEnabled(): Promise<void>;
     showFloatingButton(): Promise<void>;
-    setKeyboardOverlayConfig(): Promise<void>;
-    hideKeyboardOverlay(): Promise<void>;
     openWifiSettings(): Promise<void>;
     setBluetoothEnabled(): Promise<void>;
     openTeamViewer(): Promise<void>;

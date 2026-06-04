@@ -40,8 +40,6 @@ async function getDeviceInfo() {
 * [`getDeviceId()`](#getdeviceid)
 * [`setKeyboardEnabled(...)`](#setkeyboardenabled)
 * [`showFloatingButton()`](#showfloatingbutton)
-* [`setKeyboardOverlayConfig(...)`](#setkeyboardoverlayconfig)
-* [`hideKeyboardOverlay()`](#hidekeyboardoverlay)
 * [`openWifiSettings()`](#openwifisettings)
 * [`setBluetoothEnabled(...)`](#setbluetoothenabled)
 * [`openTeamViewer()`](#openteamviewer)
@@ -92,34 +90,6 @@ showFloatingButton() => Promise<void>
 ```
 
 Show floating overlay back button
-
---------------------
-
-
-### setKeyboardOverlayConfig(...)
-
-```typescript
-setKeyboardOverlayConfig(options: { enabled: boolean; }) => Promise<void>
-```
-
-Enable or disable keyboard overlay button
-- enabled: true → show floating button when keyboard is visible
-- enabled: false → disable completely
-
-| Param         | Type                               |
-| ------------- | ---------------------------------- |
-| **`options`** | <code>{ enabled: boolean; }</code> |
-
---------------------
-
-
-### hideKeyboardOverlay()
-
-```typescript
-hideKeyboardOverlay() => Promise<void>
-```
-
-Manually hide keyboard overlay button
 
 --------------------
 

@@ -16,12 +16,6 @@ class DeviceIdWeb extends core.WebPlugin {
     async showFloatingButton() {
         throw new Error('showFloatingButton is not supported on web');
     }
-    async setKeyboardOverlayConfig() {
-        throw new Error('setKeyboardOverlayConfig is not supported on web');
-    }
-    async hideKeyboardOverlay() {
-        throw new Error('hideKeyboardOverlay is not supported on web');
-    }
     async openWifiSettings() {
         throw new Error('openWifiSettings is not supported on web');
     }
