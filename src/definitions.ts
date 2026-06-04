@@ -30,9 +30,11 @@ export interface DeviceIdPlugin {
   }): Promise<void>;
 
   /**
-   * Show floating overlay back button
+   * Show or hide floating overlay back button
    */
-  showFloatingButton(): Promise<void>;
+  showFloatingButton(options?: {
+    show?: boolean;
+  }): Promise<void>;
 
   /**
    * Open Android Wi-Fi settings

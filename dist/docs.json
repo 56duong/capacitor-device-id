@@ -57,11 +57,17 @@
       },
       {
         "name": "showFloatingButton",
-        "signature": "() => Promise<void>",
-        "parameters": [],
+        "signature": "(options?: { show?: boolean | undefined; } | undefined) => Promise<void>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ show?: boolean | undefined; } | undefined"
+          }
+        ],
         "returns": "Promise<void>",
         "tags": [],
-        "docs": "Show floating overlay back button",
+        "docs": "Show or hide floating overlay back button",
         "complexTypes": [],
         "slug": "showfloatingbutton"
       },

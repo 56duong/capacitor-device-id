@@ -15,11 +15,24 @@ public class FloatingService extends Service {
 
   private WindowManager windowManager;
   private View floatingView;
+
   private float x, y;
   private float touchX, touchY;
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+
+    boolean show = intent == null || intent.getBooleanExtra("show", true);
+
+    if (!show) {
+      stopSelf();
+      return START_NOT_STICKY;
+    }
+
+    // Already visible
+    if (floatingView != null) {
+      return START_NOT_STICKY;
+    }
 
     floatingView = LayoutInflater.from(this)
       .inflate(R.layout.floating_button, null);
@@ -50,21 +63,9 @@ public class FloatingService extends Service {
 
     windowManager.addView(floatingView, params);
 
-//    floatingView.setOnClickListener(v -> {
-//
-//      Intent launchIntent =
-//        getPackageManager()
-//          .getLaunchIntentForPackage(getPackageName());
-//
-//      launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//      startActivity(launchIntent);
-//
-//      stopSelf();
-//    });
-
     floatingView.setOnTouchListener((v, event) -> {
       switch (event.getAction()) {
+
         case MotionEvent.ACTION_DOWN:
           x = params.x;
           y = params.y;
@@ -79,16 +80,21 @@ public class FloatingService extends Service {
           return true;
 
         case MotionEvent.ACTION_UP:
-          // Click if not moved much (optional)
           if (Math.abs(event.getRawX() - touchX) < 10 && Math.abs(event.getRawY() - touchY) < 10) {
+
             Intent launchIntent = getPackageManager()
                     .getLaunchIntentForPackage(getPackageName());
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(launchIntent);
+
+            if (launchIntent != null) {
+              launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              startActivity(launchIntent);
+            }
+
             stopSelf();
           }
           return true;
       }
+
       return false;
     });
 
@@ -96,17 +102,18 @@ public class FloatingService extends Service {
   }
 
   @Override
-  public IBinder onBind(Intent intent) {
-    return null;
-  }
-
-  @Override
   public void onDestroy() {
 
     super.onDestroy();
 
-    if (floatingView != null) {
+    if (floatingView != null && windowManager != null) {
       windowManager.removeView(floatingView);
+      floatingView = null;
     }
+  }
+
+  @Override
+  public IBinder onBind(Intent intent) {
+    return null;
   }
 }
