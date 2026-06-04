@@ -64,26 +64,31 @@ public class DeviceIdPlugin extends Plugin {
 
     @PluginMethod
     public void showFloatingButton(PluginCall call) {
-        boolean show = call.getBoolean("show", true);
-        if (show && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             if (!Settings.canDrawOverlays(getContext())) {
+
                 Intent intent = new Intent(
                         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getContext().getPackageName())
                 );
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 getContext().startActivity(intent);
+
                 call.reject("Overlay permission required");
+
                 return;
             }
         }
-        Intent serviceIntent = new Intent(getContext(), FloatingService.class);
-        serviceIntent.putExtra("show", show);
-        if (show) {
-            getContext().startService(serviceIntent);
-        } else {
-            getContext().stopService(serviceIntent);
-        }
+
+        Intent serviceIntent =
+                new Intent(getContext(), FloatingService.class);
+
+        getContext().startService(serviceIntent);
+
         call.resolve();
     }
 

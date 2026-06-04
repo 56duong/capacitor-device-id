@@ -39,7 +39,7 @@ async function getDeviceInfo() {
 
 * [`getDeviceId()`](#getdeviceid)
 * [`setKeyboardEnabled(...)`](#setkeyboardenabled)
-* [`showFloatingButton(...)`](#showfloatingbutton)
+* [`showFloatingButton()`](#showfloatingbutton)
 * [`openWifiSettings()`](#openwifisettings)
 * [`setBluetoothEnabled(...)`](#setbluetoothenabled)
 * [`openTeamViewer()`](#openteamviewer)
@@ -83,17 +83,13 @@ Show or hide the keyboard
 --------------------
 
 
-### showFloatingButton(...)
+### showFloatingButton()
 
 ```typescript
-showFloatingButton(options?: { show?: boolean | undefined; } | undefined) => Promise<void>
+showFloatingButton() => Promise<void>
 ```
 
-Show or hide floating overlay back button
-
-| Param         | Type                             |
-| ------------- | -------------------------------- |
-| **`options`** | <code>{ show?: boolean; }</code> |
+Show floating overlay back button
 
 --------------------
 
