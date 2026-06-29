@@ -415,7 +415,6 @@ public class DeviceIdPlugin extends Plugin {
         JSObject result = new JSObject();
         result.put("printers", printerArray);
         result.put("subnet", subnet);
-        result.put("scannedAt", System.currentTimeMillis());
 
         call.resolve(result);
     }

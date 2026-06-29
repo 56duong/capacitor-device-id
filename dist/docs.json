@@ -428,13 +428,6 @@
           "docs": "Subnet that was scanned, e.g. \"192.168.1\"",
           "complexTypes": [],
           "type": "string"
-        },
-        {
-          "name": "scannedAt",
-          "tags": [],
-          "docs": "Unix timestamp (ms) when the scan completed",
-          "complexTypes": [],
-          "type": "number"
         }
       ]
     },

@@ -189,6 +189,4 @@ export interface ScanNetworkPrintersResult {
   printers: PrinterDevice[];
   /** Subnet that was scanned, e.g. "192.168.1" */
   subnet: string;
-  /** Unix timestamp (ms) when the scan completed */
-  scannedAt: number;
 }

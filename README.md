@@ -289,11 +289,10 @@ Scans all 254 IPs in parallel — typically completes in 2–5 seconds.
 
 #### ScanNetworkPrintersResult
 
-| Prop            | Type                         | Description                                 |
-| --------------- | ---------------------------- | ------------------------------------------- |
-| **`printers`**  | <code>PrinterDevice[]</code> | Printers found on the network               |
-| **`subnet`**    | <code>string</code>          | Subnet that was scanned, e.g. "192.168.1"   |
-| **`scannedAt`** | <code>number</code>          | Unix timestamp (ms) when the scan completed |
+| Prop           | Type                         | Description                               |
+| -------------- | ---------------------------- | ----------------------------------------- |
+| **`printers`** | <code>PrinterDevice[]</code> | Printers found on the network             |
+| **`subnet`**   | <code>string</code>          | Subnet that was scanned, e.g. "192.168.1" |
 
 
 #### PrinterDevice
