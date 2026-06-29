@@ -89,6 +89,21 @@ export interface DeviceIdPlugin {
     readUsbFile(options: {
         path: string;
     }): Promise<ReadUsbFileResult>;
+    /**
+     * Scan the local WiFi subnet for ESC/POS printers listening on port 9100.
+     * Scans all 254 IPs in parallel — typically completes in 2–5 seconds.
+     *
+     * @returns List of discovered printer IPs, the subnet scanned, and a timestamp.
+     *
+     * @example
+     * const result = await DeviceId.scanNetworkPrinters();
+     * console.log(result.printers);
+     * // [{ ip: "192.168.1.45", port: 9100 }, { ip: "192.168.1.102", port: 9100 }]
+     *
+     * @example with timeout option
+     * const result = await DeviceId.scanNetworkPrinters({ timeoutMs: 5000 });
+     */
+    scanNetworkPrinters(options?: ScanNetworkPrintersOptions): Promise<ScanNetworkPrintersResult>;
 }
 export interface DeviceIdResult {
     uniqueId: string;
@@ -116,4 +131,36 @@ export interface ReadUsbFileResult {
     data: string;
     name: string;
     path: string;
+}
+export interface ScanNetworkPrintersOptions {
+    /**
+     * Max milliseconds to wait for the full scan to complete.
+     * Default: 10000 (10 seconds)
+     */
+    timeoutMs?: number;
+    /**
+     * TCP connect timeout per IP in milliseconds.
+     * Lower = faster scan, but may miss slow routers.
+     * Default: 300
+     */
+    connectTimeoutMs?: number;
+    /**
+     * Port to probe. Default: 9100 (RAW/JetDirect — standard for ESC/POS printers).
+     * Change to 515 for LPD or 631 for IPP if needed.
+     */
+    port?: number;
+}
+export interface PrinterDevice {
+    /** IPv4 address of the discovered printer */
+    ip: string;
+    /** Port that responded (matches the probed port, default 9100) */
+    port: number;
+}
+export interface ScanNetworkPrintersResult {
+    /** Printers found on the network */
+    printers: PrinterDevice[];
+    /** Subnet that was scanned, e.g. "192.168.1" */
+    subnet: string;
+    /** Unix timestamp (ms) when the scan completed */
+    scannedAt: number;
 }

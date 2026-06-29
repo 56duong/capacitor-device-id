@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +27,15 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.view.WindowManager;
@@ -347,6 +358,124 @@ public class DeviceIdPlugin extends Plugin {
 
         } catch (Exception ex) {
             call.reject("Failed to read file: " + ex.getMessage(), ex);
+        }
+    }
+
+
+
+    @PluginMethod
+    public void scanNetworkPrinters(PluginCall call) {
+        int timeoutMs        = call.getInt("timeoutMs", 10000);       // full scan timeout
+        int connectTimeoutMs = call.getInt("connectTimeoutMs", 300);  // per-IP connect timeout
+        int port             = call.getInt("port", 9100);             // port to probe
+
+        // Get current subnet
+        String subnet = getSubnet(getContext());
+        if (subnet == null) {
+            call.reject("Could not determine subnet. Is WiFi connected?");
+            return;
+        }
+
+        // Scan all 254 IPs in parallel
+        // 50 threads: sweet spot — scans 254 IPs in ~2-3s without overwhelming the router
+        ExecutorService executor = Executors.newFixedThreadPool(50);
+        List<JSObject> found = Collections.synchronizedList(new ArrayList<>());
+
+        for (int i = 1; i <= 254; i++) {
+            final String ip = subnet + "." + i;
+            executor.execute(() -> {
+                if (isPortOpen(ip, port, connectTimeoutMs)) {
+                    JSObject printer = new JSObject();
+                    printer.put("ip", ip);
+                    printer.put("port", port);
+                    found.add(printer);
+                }
+            });
+        }
+
+        executor.shutdown();
+        try {
+            boolean finished = executor.awaitTermination(timeoutMs, TimeUnit.MILLISECONDS);
+            if (!finished) {
+                // Timed out — return whatever was found so far, don't reject
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            call.reject("Scan was interrupted");
+            return;
+        }
+
+        // Build result
+        JSArray printerArray = new JSArray();
+        for (JSObject printer : found) {
+            printerArray.put(printer);
+        }
+
+        JSObject result = new JSObject();
+        result.put("printers", printerArray);
+        result.put("subnet", subnet);
+        result.put("scannedAt", System.currentTimeMillis());
+
+        call.resolve(result);
+    }
+
+
+
+    /**
+     * Check if a TCP port is open on the given IP
+     * @param ip
+     * @param port
+     * @param timeoutMs
+     * @return
+     */
+    private boolean isPortOpen(String ip, int port, int timeoutMs) {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(ip, port), timeoutMs);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Get subnet prefix from current WiFi connection
+     * e.g. device IP 192.168.1.42 -> returns "192.168.1"
+     * @param context
+     * @return
+     */
+    private String getSubnet(Context context) {
+        try {
+            WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
+
+            if (wifiManager == null) return null;
+
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo == null) return null;
+
+            int ipInt = wifiInfo.getIpAddress();
+            if (ipInt == 0) return null; // not connected
+
+            // Android stores WiFi IP as little-endian int — unpack manually
+            String ipAddress = String.format(
+                    Locale.US,
+                    "%d.%d.%d.%d",
+                    (ipInt & 0xff),
+                    (ipInt >> 8)  & 0xff,
+                    (ipInt >> 16) & 0xff,
+                    (ipInt >> 24) & 0xff
+            );
+
+            String[] parts = ipAddress.split("\\.");
+            if (parts.length < 3) return null;
+
+            return parts[0] + "." + parts[1] + "." + parts[2];
+
+        } catch (Exception e) {
+            return null;
         }
     }
 

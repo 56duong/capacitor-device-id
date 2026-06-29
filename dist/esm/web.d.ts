@@ -10,4 +10,5 @@ export declare class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     scanUsb(): Promise<ScanUsbResult>;
     listFiles(): Promise<any>;
     readUsbFile(): Promise<any>;
+    scanNetworkPrinters(): Promise<any>;
 }

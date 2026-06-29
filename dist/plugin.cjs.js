@@ -34,6 +34,9 @@ class DeviceIdWeb extends core.WebPlugin {
     async readUsbFile() {
         throw new Error('readUsbFile is not supported on web');
     }
+    async scanNetworkPrinters() {
+        throw new Error('scanNetworkPrinters is not supported on web');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

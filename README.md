@@ -48,6 +48,7 @@ async function getDeviceInfo() {
 * [`addListener('usbDetached', ...)`](#addlistenerusbdetached-)
 * [`listFiles(...)`](#listfiles)
 * [`readUsbFile(...)`](#readusbfile)
+* [`scanNetworkPrinters(...)`](#scannetworkprinters)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -214,6 +215,24 @@ Read a file from USB storage
 --------------------
 
 
+### scanNetworkPrinters(...)
+
+```typescript
+scanNetworkPrinters(options?: ScanNetworkPrintersOptions | undefined) => Promise<ScanNetworkPrintersResult>
+```
+
+Scan the local WiFi subnet for ESC/POS printers listening on port 9100.
+Scans all 254 IPs in parallel — typically completes in 2–5 seconds.
+
+| Param         | Type                                                                              |
+| ------------- | --------------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#scannetworkprintersoptions">ScanNetworkPrintersOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#scannetworkprintersresult">ScanNetworkPrintersResult</a>&gt;</code>
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -266,5 +285,31 @@ Read a file from USB storage
 | **`data`** | <code>string</code> |
 | **`name`** | <code>string</code> |
 | **`path`** | <code>string</code> |
+
+
+#### ScanNetworkPrintersResult
+
+| Prop            | Type                         | Description                                 |
+| --------------- | ---------------------------- | ------------------------------------------- |
+| **`printers`**  | <code>PrinterDevice[]</code> | Printers found on the network               |
+| **`subnet`**    | <code>string</code>          | Subnet that was scanned, e.g. "192.168.1"   |
+| **`scannedAt`** | <code>number</code>          | Unix timestamp (ms) when the scan completed |
+
+
+#### PrinterDevice
+
+| Prop       | Type                | Description                                                 |
+| ---------- | ------------------- | ----------------------------------------------------------- |
+| **`ip`**   | <code>string</code> | IPv4 address of the discovered printer                      |
+| **`port`** | <code>number</code> | Port that responded (matches the probed port, default 9100) |
+
+
+#### ScanNetworkPrintersOptions
+
+| Prop                   | Type                | Description                                                                                                                   |
+| ---------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **`timeoutMs`**        | <code>number</code> | Max milliseconds to wait for the full scan to complete. Default: 10000 (10 seconds)                                           |
+| **`connectTimeoutMs`** | <code>number</code> | TCP connect timeout per IP in milliseconds. Lower = faster scan, but may miss slow routers. Default: 300                      |
+| **`port`**             | <code>number</code> | Port to probe. Default: 9100 (RAW/JetDirect — standard for ESC/POS printers). Change to 515 for LPD or 631 for IPP if needed. |
 
 </docgen-api>

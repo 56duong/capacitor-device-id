@@ -27,5 +27,8 @@ export class DeviceIdWeb extends WebPlugin {
     async readUsbFile() {
         throw new Error('readUsbFile is not supported on web');
     }
+    async scanNetworkPrinters() {
+        throw new Error('scanNetworkPrinters is not supported on web');
+    }
 }
 //# sourceMappingURL=web.js.map

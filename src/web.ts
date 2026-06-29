@@ -40,4 +40,8 @@ export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
     throw new Error('readUsbFile is not supported on web');
   }
 
+  async scanNetworkPrinters(): Promise<any> {
+    throw new Error('scanNetworkPrinters is not supported on web');
+  }
+
 }

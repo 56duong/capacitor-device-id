@@ -15,4 +15,7 @@
 
   <!-- bluetooth-->
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+  <!-- ip-->
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 </manifest>
