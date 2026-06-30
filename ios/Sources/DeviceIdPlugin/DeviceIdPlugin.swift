@@ -11,17 +11,27 @@ public class DeviceIdPlugin: CAPPlugin {
     }
 
     @objc func scanNetworkPrinters(_ call: CAPPluginCall) {
+        print("🚀 scanNetworkPrinters called")
+        
         let timeoutMs        = call.getInt("timeoutMs", 10000)
         let connectTimeoutMs = call.getInt("connectTimeoutMs", 300)
         let port             = call.getInt("port", 9100)
+
+        print("========== Printer Scan ==========")
+        print("Timeout: \(timeoutMs) ms")
+        print("Connect Timeout: \(connectTimeoutMs) ms")
+        print("Port: \(port)")
     
         // Must run off main thread
         DispatchQueue.global(qos: .userInitiated).async {
             // 1. Get current device subnet
             guard let subnet = self.implementation.getWifiSubnet() else {
+                print("❌ Failed to determine WiFi subnet")
                 call.reject("Could not determine subnet. Is WiFi connected?")
                 return
             }
+
+            print("✅ Subnet: \(subnet)")
     
             // 2. Scan all 254 IPs concurrently
             let group       = DispatchGroup()
@@ -32,6 +42,8 @@ public class DeviceIdPlugin: CAPPlugin {
             let lock        = NSLock()
     
             let deadline    = DispatchTime.now() + .milliseconds(timeoutMs)
+
+            print("[2] Starting scan...")
     
             for i in 1...254 {
                 let ip = "\(subnet).\(i)"
@@ -54,6 +66,8 @@ public class DeviceIdPlugin: CAPPlugin {
                     }
                 }
             }
+
+            print("[3] Waiting for scan to finish...")
     
             // Wait for all, but respect total timeout
             _ = group.wait(timeout: deadline)
