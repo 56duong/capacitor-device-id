@@ -30,5 +30,14 @@ export class DeviceIdWeb extends WebPlugin {
     async scanNetworkPrinters() {
         throw new Error('scanNetworkPrinters is not supported on web');
     }
+    async showSecondScreen() {
+        throw new Error('showSecondScreen is not supported on web');
+    }
+    async hideSecondScreen() {
+        throw new Error('hideSecondScreen is not supported on web');
+    }
+    async updateSecondScreen(_options) {
+        throw new Error('updateSecondScreen is not supported on web');
+    }
 }
 //# sourceMappingURL=web.js.map

@@ -238,6 +238,59 @@
           "ScanNetworkPrintersOptions"
         ],
         "slug": "scannetworkprinters"
+      },
+      {
+        "name": "showSecondScreen",
+        "signature": "() => Promise<ShowSecondScreenResult>",
+        "parameters": [],
+        "returns": "Promise<ShowSecondScreenResult>",
+        "tags": [
+          {
+            "name": "example",
+            "text": "const { displayId } = await DeviceId.showSecondScreen();"
+          }
+        ],
+        "docs": "Shows Screen 2 on the secondary Android display.\r\n\r\nThe native plugin finds the available secondary display and opens Screen 2 in a separate WebView.\r\nScreen 2 loads the same app bundle as Screen 1, so the app must be able to tell which screen it is running on.\r\n\r\nFlow:\r\n  Screen 1 -> Native Plugin -> Secondary Android Display -> Screen 2 WebView\r\n\r\nScreen 2 contract (names are fixed, the native plugin calls / injects them):\r\n  - `window.SecondScreenBridge.isSecondScreen()`\r\n      Injected by the native plugin into Screen 2's WebView ONLY, before the page loads.\r\n      It does not exist on Screen 1. Use it to detect which screen the app is running on,\r\n      e.g. to skip login, splash and other Screen 1 startup work on Screen 2.\r\n  - `window.secondScreenReady()`\r\n      Implement it on Screen 2. Native polls until it exists, then calls it once\r\n      so the app can navigate to its second-screen route. Screen 2 stays hidden until then.\r\n  - `window.updateSecondScreen(data)`\r\n      Implement it on Screen 2. See `updateSecondScreen()`.\r\n\r\nRejects if the device has no secondary presentation display.",
+        "complexTypes": [
+          "ShowSecondScreenResult"
+        ],
+        "slug": "showsecondscreen"
+      },
+      {
+        "name": "hideSecondScreen",
+        "signature": "() => Promise<void>",
+        "parameters": [],
+        "returns": "Promise<void>",
+        "tags": [
+          {
+            "name": "example",
+            "text": "await DeviceId.hideSecondScreen();"
+          }
+        ],
+        "docs": "Hides Screen 2 from the secondary Android display.\r\n\r\nThe native plugin closes Screen 2 and destroys its WebView.\r\n\r\nFlow:\r\n  Screen 1 -> Native Plugin -> Screen 2 WebView -> Closed",
+        "complexTypes": [],
+        "slug": "hidesecondscreen"
+      },
+      {
+        "name": "updateSecondScreen",
+        "signature": "(options: { data: any; }) => Promise<void>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ data: any; }"
+          }
+        ],
+        "returns": "Promise<void>",
+        "tags": [
+          {
+            "name": "example",
+            "text": "await DeviceId.updateSecondScreen({ data: currentInvoice });"
+          }
+        ],
+        "docs": "Updates Screen 2.\r\n\r\nThe native plugin sends the data to Screen 2, where it is received by `window.updateSecondScreen(data)`.\r\n\r\nImplement `window.updateSecondScreen(data)` on Screen 2\r\nto receive data from Screen 1.\r\n\r\nFlow:\r\n  Screen 1 -> Native Plugin -> Screen 2 WebView -> window.updateSecondScreen(data)\r\n\r\nScreen 1 and Screen 2 use separate WebViews, so data must\r\npass through the native plugin. The native plugin only acts\r\nas a bridge.",
+        "complexTypes": [],
+        "slug": "updatesecondscreen"
       }
     ],
     "properties": []
@@ -481,6 +534,22 @@
           "docs": "Port to probe. Default: 9100 (RAW/JetDirect — standard for ESC/POS printers).\r\nChange to 515 for LPD or 631 for IPP if needed.",
           "complexTypes": [],
           "type": "number | undefined"
+        }
+      ]
+    },
+    {
+      "name": "ShowSecondScreenResult",
+      "slug": "showsecondscreenresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "displayId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
         }
       ]
     }

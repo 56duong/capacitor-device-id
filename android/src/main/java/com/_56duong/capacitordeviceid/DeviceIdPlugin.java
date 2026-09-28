@@ -1,23 +1,29 @@
 package com._56duong.capacitordeviceid;
 
 import android.Manifest;
+import android.app.Presentation;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.display.DisplayManager;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.getcapacitor.Bridge;
+import com.getcapacitor.BridgeWebViewClient;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -38,7 +44,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
+import android.view.Display;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import androidx.core.content.ContextCompat;
 
@@ -192,6 +202,10 @@ public class DeviceIdPlugin extends Plugin {
                 getContext().unregisterReceiver(usbReceiver);
             } catch (Exception ignored) {
             }
+        }
+        if (secondScreenPresentation != null) {
+            secondScreenPresentation.dismiss();
+            secondScreenPresentation = null;
         }
     }
 
@@ -475,6 +489,248 @@ public class DeviceIdPlugin extends Plugin {
 
         } catch (Exception e) {
             return null;
+        }
+    }
+
+// MARK: Second Screen
+//
+// Flow:
+//   1. showSecondScreen()
+//      -> Native finds the secondary Android display.
+//      -> Opens a Presentation with a separate WebView.
+//      -> Loads the same Capacitor app URL.
+//      -> Waits for `window.secondScreenReady()` before showing Screen 2.
+//
+//   2. updateSecondScreen({ data })
+//      -> Called from Screen 1.
+//      -> Native receives the data and forwards it to Screen 2.
+//      -> Screen 2 receives it through `window.updateSecondScreen(data)`.
+//
+//      Screen 1 -> Native Plugin -> Screen 2 WebView
+//               -> window.updateSecondScreen(data)
+//
+//      Screen 1 and Screen 2 use separate WebViews, so data cannot be
+//      sent directly between them. Native acts as the bridge.
+//
+//   3. hideSecondScreen()
+//      -> Closes the Presentation and destroys the Screen 2 WebView.
+
+    private Presentation secondScreenPresentation;
+
+    @PluginMethod
+    public void showSecondScreen(PluginCall call) {
+        Activity activity = getActivity();
+
+        activity.runOnUiThread(() -> {
+            try {
+                DisplayManager displayManager = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
+
+                // DISPLAY_CATEGORY_PRESENTATION filters to displays meant for
+                // secondary-screen use (HDMI out, USB-C display, etc), not just
+                // any connected display.
+                Display[] displays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+
+                Log.d("SecondScreen", "Presentation displays: " + displays.length);
+
+                if (displays.length == 0) {
+                    call.reject("No secondary presentation display found");
+                    return;
+                }
+
+                Display secondDisplay = displays[0];
+
+//                // Diagnostic for verifying Sunmi/other hardware exposes the customer
+//                // display the same way the emulator's virtual display does. Flags to
+//                // look for: FLAG_PRESENTATION should be set (that's why it showed up
+//                // in DISPLAY_CATEGORY_PRESENTATION at all); FLAG_SECURE and
+//                // FLAG_SUPPORTS_PROTECTED_BUFFERS are what some vendor docs check for
+//                // as well. getState() confirms it's actually ON, not just present.
+//                Log.d("SecondScreen", "Display flags: " + secondDisplay.getFlags()
+//                        + " (FLAG_PRESENTATION=" + ((secondDisplay.getFlags() & Display.FLAG_PRESENTATION) != 0)
+//                        + ", FLAG_SECURE=" + ((secondDisplay.getFlags() & Display.FLAG_SECURE) != 0) + ")");
+//                Log.d("SecondScreen", "Display state: " + secondDisplay.getState());
+//                Log.d("SecondScreen", "Display size: " + secondDisplay.getWidth() + "x" + secondDisplay.getHeight());
+//                DisplayMetrics metrics = new DisplayMetrics();
+//                secondDisplay.getRealMetrics(metrics);
+//                Log.d("SecondScreen", "Display DPI: " + metrics.densityDpi + ", size: " + metrics.widthPixels + "x" + metrics.heightPixels);
+
+                Log.d("SecondScreen", "Using display: " + secondDisplay.getDisplayId());
+
+                // Reopening should not leak the previous Presentation/WebView.
+                if (secondScreenPresentation != null) {
+                    secondScreenPresentation.dismiss();
+                    secondScreenPresentation = null;
+                }
+
+                secondScreenPresentation = new SecondScreenPresentation(activity, secondDisplay, getBridge());
+                secondScreenPresentation.show();
+
+                JSObject result = new JSObject();
+                result.put("displayId", secondDisplay.getDisplayId());
+
+                call.resolve(result);
+
+            } catch (Exception e) {
+                Log.e("SecondScreen", "Failed to show second screen", e);
+                call.reject("Failed to show second screen: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    @PluginMethod
+    public void hideSecondScreen(PluginCall call) {
+        Activity activity = getActivity();
+
+        activity.runOnUiThread(() -> {
+            try {
+                if (secondScreenPresentation != null) {
+                    secondScreenPresentation.dismiss();
+                    secondScreenPresentation = null;
+                }
+
+                call.resolve();
+
+            } catch (Exception e) {
+                Log.e("SecondScreen", "Failed to hide second screen", e);
+                call.reject("Failed to hide second screen: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    @PluginMethod
+    public void updateSecondScreen(PluginCall call) {
+        // Accepts an arbitrary nested object from JS, e.g.:
+        //   { data: { invoiceNumber, items: [...], total, status, ... } }
+        // The shape is intentionally opaque to native code - it's just
+        // forwarded to the WebView and rendered with `| json` on the Angular
+        // side, so new data fields don't require touching this plugin.
+        JSObject data = call.getObject("data", new JSObject());
+
+        if (secondScreenPresentation instanceof SecondScreenPresentation) {
+            SecondScreenPresentation screen = (SecondScreenPresentation) secondScreenPresentation;
+
+            getActivity().runOnUiThread(() ->
+                    screen.updateData(data)
+            );
+        }
+
+        call.resolve();
+    }
+
+    private static class SecondScreenPresentation extends Presentation {
+
+        private WebView webView;
+        private final Bridge bridge;
+        private boolean ready = false;
+        private JSObject pendingData;
+
+        SecondScreenPresentation(Context context, Display display, Bridge bridge) {
+            super(context, display);
+            this.bridge = bridge;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            webView = new WebView(getContext());
+
+            WebSettings settings = webView.getSettings();
+            settings.setJavaScriptEnabled(true);
+            settings.setDomStorageEnabled(true);
+
+            // Exposes window.SecondScreenBridge.isSecondScreen() to JS. Registered
+            // BEFORE loadUrl(), so it's already present when Angular's bootstrap
+            // code runs - no timing/parsing race like a URL param would have.
+            webView.addJavascriptInterface(new Object() {
+                @JavascriptInterface
+                public boolean isSecondScreen() {
+                    return true;
+                }
+            }, "SecondScreenBridge");
+
+            // Hidden until window.secondScreenReady() confirms the Angular
+            // route has actually mounted - avoids a flash of the main POS UI
+            // on the external display before it navigates away.
+            webView.setAlpha(0f);
+
+            webView.setWebViewClient(new BridgeWebViewClient(bridge) {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    Log.d("SecondScreen", "Page finished: " + url);
+                    waitForSecondScreenReady(view);
+                }
+            });
+
+            // Same app URL as the main screen - the WebView loads the whole
+            // app and app.component.ts's router.navigate(['/second-screen'])
+            // is what actually switches it to the second-screen route.
+            String url = bridge.getAppUrl();
+            webView.loadUrl(url);
+
+            setContentView(webView);
+        }
+
+        // Polls for window.secondScreenReady() every 100ms until it's defined,
+        // since onPageFinished fires before Angular has bootstrapped and
+        // registered the global. Once it succeeds, fades the WebView in.
+        private void waitForSecondScreenReady(WebView view) {
+            view.evaluateJavascript(
+                    "(function() {" +
+                            "if (window.secondScreenReady) {" +
+                            "    window.secondScreenReady();" +
+                            "    return 'opened';" +
+                            "}" +
+                            "return 'not-ready';" +
+                            "})()",
+                    result -> {
+                        Log.d("SecondScreen", "secondScreenReady result: " + result);
+
+                        if ("\"opened\"".equals(result)) {
+                            ready = true;
+                            if (pendingData != null) {
+                                sendData(pendingData);
+                                pendingData = null;
+                            }
+                            view.postDelayed(() -> view.setAlpha(1f), 100);
+                            return;
+                        }
+
+                        view.postDelayed(() -> waitForSecondScreenReady(view), 100);
+                    }
+            );
+        }
+
+        @Override
+        public void dismiss() {
+            if (webView != null) {
+                webView.stopLoading();
+                webView.loadUrl("about:blank");
+                webView.setWebViewClient(null);
+                webView.destroy();
+                webView = null;
+            }
+
+            super.dismiss();
+        }
+
+        // Native -> Screen 2:
+        // Execute `window.updateSecondScreen(data)` inside Screen 2's WebView.
+        void updateData(JSObject data) {
+            pendingData = data;
+            if (webView == null || !ready) return;
+            sendData(data);
+        }
+
+        private void sendData(JSObject data) {
+            if (webView == null) return;
+
+            String json = data.toString();
+            webView.evaluateJavascript(
+                    "window.updateSecondScreen(" + json + ");",
+                    null
+            );
         }
     }
 

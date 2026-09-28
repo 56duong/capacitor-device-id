@@ -37,6 +37,15 @@ class DeviceIdWeb extends core.WebPlugin {
     async scanNetworkPrinters() {
         throw new Error('scanNetworkPrinters is not supported on web');
     }
+    async showSecondScreen() {
+        throw new Error('showSecondScreen is not supported on web');
+    }
+    async hideSecondScreen() {
+        throw new Error('hideSecondScreen is not supported on web');
+    }
+    async updateSecondScreen(_options) {
+        throw new Error('updateSecondScreen is not supported on web');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

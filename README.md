@@ -49,6 +49,9 @@ async function getDeviceInfo() {
 * [`listFiles(...)`](#listfiles)
 * [`readUsbFile(...)`](#readusbfile)
 * [`scanNetworkPrinters(...)`](#scannetworkprinters)
+* [`showSecondScreen()`](#showsecondscreen)
+* [`hideSecondScreen()`](#hidesecondscreen)
+* [`updateSecondScreen(...)`](#updatesecondscreen)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -233,6 +236,81 @@ Scans all 254 IPs in parallel — typically completes in 2–5 seconds.
 --------------------
 
 
+### showSecondScreen()
+
+```typescript
+showSecondScreen() => Promise<ShowSecondScreenResult>
+```
+
+Shows Screen 2 on the secondary Android display.
+
+The native plugin finds the available secondary display and opens Screen 2 in a separate WebView.
+Screen 2 loads the same app bundle as Screen 1, so the app must be able to tell which screen it is running on.
+
+Flow:
+  Screen 1 -&gt; Native Plugin -&gt; Secondary Android Display -&gt; Screen 2 WebView
+
+Screen 2 contract (names are fixed, the native plugin calls / injects them):
+  - `window.SecondScreenBridge.isSecondScreen()`
+      Injected by the native plugin into Screen 2's WebView ONLY, before the page loads.
+      It does not exist on Screen 1. Use it to detect which screen the app is running on,
+      e.g. to skip login, splash and other Screen 1 startup work on Screen 2.
+  - `window.secondScreenReady()`
+      Implement it on Screen 2. Native polls until it exists, then calls it once
+      so the app can navigate to its second-screen route. Screen 2 stays hidden until then.
+  - `window.updateSecondScreen(data)`
+      Implement it on Screen 2. See `updateSecondScreen()`.
+
+Rejects if the device has no secondary presentation display.
+
+**Returns:** <code>Promise&lt;<a href="#showsecondscreenresult">ShowSecondScreenResult</a>&gt;</code>
+
+--------------------
+
+
+### hideSecondScreen()
+
+```typescript
+hideSecondScreen() => Promise<void>
+```
+
+Hides Screen 2 from the secondary Android display.
+
+The native plugin closes Screen 2 and destroys its WebView.
+
+Flow:
+  Screen 1 -&gt; Native Plugin -&gt; Screen 2 WebView -&gt; Closed
+
+--------------------
+
+
+### updateSecondScreen(...)
+
+```typescript
+updateSecondScreen(options: { data: any; }) => Promise<void>
+```
+
+Updates Screen 2.
+
+The native plugin sends the data to Screen 2, where it is received by `window.updateSecondScreen(data)`.
+
+Implement `window.updateSecondScreen(data)` on Screen 2
+to receive data from Screen 1.
+
+Flow:
+  Screen 1 -&gt; Native Plugin -&gt; Screen 2 WebView -&gt; window.updateSecondScreen(data)
+
+Screen 1 and Screen 2 use separate WebViews, so data must
+pass through the native plugin. The native plugin only acts
+as a bridge.
+
+| Param         | Type                        |
+| ------------- | --------------------------- |
+| **`options`** | <code>{ data: any; }</code> |
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -310,5 +388,12 @@ Scans all 254 IPs in parallel — typically completes in 2–5 seconds.
 | **`timeoutMs`**        | <code>number</code> | Max milliseconds to wait for the full scan to complete. Default: 10000 (10 seconds)                                           |
 | **`connectTimeoutMs`** | <code>number</code> | TCP connect timeout per IP in milliseconds. Lower = faster scan, but may miss slow routers. Default: 300                      |
 | **`port`**             | <code>number</code> | Port to probe. Default: 9100 (RAW/JetDirect — standard for ESC/POS printers). Change to 515 for LPD or 631 for IPP if needed. |
+
+
+#### ShowSecondScreenResult
+
+| Prop            | Type                |
+| --------------- | ------------------- |
+| **`displayId`** | <code>number</code> |
 
 </docgen-api>

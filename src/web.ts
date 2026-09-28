@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { DeviceIdPlugin, DeviceIdResult, ScanUsbResult } from './definitions';
+import type { DeviceIdPlugin, DeviceIdResult, ScanUsbResult, ShowSecondScreenResult } from './definitions';
 
 export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
 
@@ -42,6 +42,20 @@ export class DeviceIdWeb extends WebPlugin implements DeviceIdPlugin {
 
   async scanNetworkPrinters(): Promise<any> {
     throw new Error('scanNetworkPrinters is not supported on web');
+  }
+
+  async showSecondScreen(): Promise<ShowSecondScreenResult> {
+    throw new Error('showSecondScreen is not supported on web');
+  }
+
+  async hideSecondScreen(): Promise<void> {
+    throw new Error('hideSecondScreen is not supported on web');
+  }
+
+  async updateSecondScreen(_options: {
+    data: any;
+  }): Promise<void> {
+    throw new Error('updateSecondScreen is not supported on web');
   }
 
 }
